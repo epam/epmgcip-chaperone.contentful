@@ -9,6 +9,8 @@
     "@contentful/react-apps-toolkit": "1.2.16",
     "contentful-management": "10.46.4",
     "emotion": "10.0.27",
+    "file-saver": "^2.0.5",
+    "qrcode": "^1.5.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1"
