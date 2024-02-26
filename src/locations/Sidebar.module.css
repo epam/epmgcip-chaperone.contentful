@@ -1,3 +1,11 @@
 .qrcode {
-    margin: 0 auto 24px auto;
+    margin: 0 auto 16px auto;
+}
+
+.qrcode canvas {
+    max-width: 100%
+}
+
+.qrCodeWithImageSectionWrapper {
+    margin-top: 48px;
 }
