@@ -37,7 +37,9 @@ const Sidebar = () => {
   useEffect(() => {
     qrCode.append(qrCodeRef.current);
     qrCodeWithImage.append(qrCodeWithImageRef.current);
-  }, []);
+
+    sdk.window.updateHeight();
+  }, [isPublished, sdk.window]);
 
   useEffect(() => {
     const detach = contentField.onValueChanged(async (slug) => {
@@ -58,6 +60,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     const detach = entry.onSysChanged(async (sys) => {
+      console.log("1111", sys.publishedBy);
       setIsPublished(sys.publishedBy !== undefined);
     });
     return () => detach();
