@@ -18,16 +18,17 @@ Instruction from setting up Contentful account.
 ![Screenshot 2024-03-19 110658](https://github.com/epam/epmgcip-chaperone.contentful/assets/18456022/a3d58f10-4585-4656-9eee-a71aa5db8361)
 <br><br>
 10. Add QR code application:
- a) build app using <b>"npm run build"</b> on local machine<br>
- b) go to contentful - "App" -> "Custom apps" -> "Manage app definitions" -> "Create App"<br>
+ a) add REACT_APP_DOMAIN=YOUR_DOMAIN to .env
+ b) build app using <b>"npm run build"</b> on local machine<br>
+ c) go to contentful - "App" -> "Custom apps" -> "Manage app definitions" -> "Create App"<br>
  <br><br>
 ![2024-03-19 11_26_24-NotificationsController cs - orthobullets - Visual Studio Code](https://github.com/epam/epmgcip-chaperone.contentful/assets/18456022/fee55b62-3671-4895-b6c3-8370b0b4d21e)
 <br><br>
- c) type "Name"<br>
- d) enable "Hosted by Contentful"<br>
- e) upload bundle - all files from "build"<br>
- f) check "Entry sidebar"<br>
- g) save<br><br>
+ d) type "Name"<br>
+ e) enable "Hosted by Contentful"<br>
+ f) upload bundle - all files from "build"<br>
+ g) check "Entry sidebar"<br>
+ h) save<br><br>
 ![Screenshot 2024-03-19 115635](https://github.com/epam/epmgcip-chaperone.contentful/assets/18456022/9daf8175-9e77-4a0b-ae57-d2cdad5ea142)
 <br><br>
 12. go to "Content model" -> "Exhibit" -> "Sidebar" -> click "plus" icon to add QR code application -> save
