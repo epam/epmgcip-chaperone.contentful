@@ -30,6 +30,7 @@ const Sidebar = () => {
   const qrCodeWithImageRef = useRef<any>(null);
   const entry = sdk.entry;
   const contentField = entry.fields[CONTENT_FIELD_ID];
+  const [pageUrl, setPageUrl] = useState("");
   const [isPublished, setIsPublished] = useState<boolean>(
     entry.getSys().publishedBy !== undefined
   );
@@ -44,6 +45,7 @@ const Sidebar = () => {
   useEffect(() => {
     const detach = contentField.onValueChanged(async (slug) => {
       const url = `${process.env.REACT_APP_DOMAIN}/${slug}`;
+      setPageUrl(url);
 
       qrCode.update({
         data: url,
@@ -60,11 +62,14 @@ const Sidebar = () => {
 
   useEffect(() => {
     const detach = entry.onSysChanged(async (sys) => {
-      console.log("1111", sys.publishedBy);
       setIsPublished(sys.publishedBy !== undefined);
     });
     return () => detach();
   }, [entry]);
+
+  useEffect(() => {
+    sdk.window.updateHeight();
+  }, [sdk.window, pageUrl]);
 
   const handleSaveQrCodeClick = () => {
     qrCode.download({
@@ -82,6 +87,11 @@ const Sidebar = () => {
 
   return (
     <>
+      {isPublished && pageUrl.length > 0 && (
+        <a href={pageUrl} target="_blank" className={styles.link}>
+          {pageUrl}
+        </a>
+      )}
       {qrCode && isPublished && (
         <>
           <div className={styles.qrcode} ref={qrCodeRef} />

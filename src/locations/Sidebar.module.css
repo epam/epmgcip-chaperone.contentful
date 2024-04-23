@@ -9,3 +9,8 @@
 .qrCodeWithImageSectionWrapper {
     margin-top: 48px;
 }
+
+.link {
+    display: inline-block;
+    margin-bottom: 16px;
+}
