@@ -20,4 +20,5 @@ jobs:
           CONTENTFUL_ACCESS_TOKEN: ${{ secrets.STAGING_CONTENTFUL_ACCESS_TOKEN }}
           CONTENTFUL_ORG_ID: ${{ secrets.STAGING_CONTENTFUL_ORG_ID }}
           CONTENTFUL_APP_DEF_ID: ${{ secrets.STAGING_CONTENTFUL_APP_DEF_ID }}
+          REACT_APP_DOMAIN: ${{ secrets.STAGING_REACT_APP_DOMAIN }}
         run: npm run upload-ci
