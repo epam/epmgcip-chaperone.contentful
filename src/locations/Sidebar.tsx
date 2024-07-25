@@ -88,7 +88,12 @@ const Sidebar = () => {
   return (
     <>
       {isPublished && pageUrl.length > 0 && (
-        <a href={pageUrl} target="_blank" className={styles.link}>
+        <a
+          href={pageUrl}
+          target="_blank"
+          className={styles.link}
+          rel="noreferrer"
+        >
           {pageUrl}
         </a>
       )}
