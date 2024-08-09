@@ -1,46 +1,24 @@
+const languages = require('../languages.js');
+
 module.exports = function (migration) {
   const exhibit = migration
     .createContentType("exhibit")
     .name("Exhibit")
     .description("")
-    .displayField("nameEn");
-  exhibit
-    .createField("nameEn")
-    .name("Name EN")
-    .type("Symbol")
-    .localized(false)
-    .required(true)
-    .validations([])
-    .disabled(false)
-    .omitted(false);
-  exhibit
-    .createField("nameRu")
-    .name("Name RU")
-    .type("Symbol")
-    .localized(false)
-    .required(false)
-    .validations([])
-    .disabled(false)
-    .omitted(false);
-  exhibit
-    .createField("nameUz")
-    .name("Name UZ")
-    .type("Symbol")
-    .localized(false)
-    .required(false)
-    .validations([])
-    .disabled(false)
-    .omitted(false);
-  exhibit
-    .createField("nameKa")
-    .name("Name KA")
-    .type("Symbol")
-    .localized(false)
-    .required(false)
-    .validations([])
-    .disabled(false)
-    .omitted(false);
+    .displayField(`name${languages.find((lang) => lang.primary).code}`);
 
+  languages.forEach((lang) => {
+    exhibit
+      .createField(`name${lang.code}`)
+      .name(`Name ${lang.code.toUpperCase()}`)
+      .type("Symbol")
+      .localized(false)
+      .required(lang.primary)
+      .validations([])
+      .disabled(false)
+      .omitted(false);
+  });
+  
   exhibit
     .createField("images")
     .name("Images")
@@ -62,42 +40,18 @@ module.exports = function (migration) {
       linkType: "Asset",
     });
 
-  exhibit
-    .createField("authorEn")
-    .name("Author EN")
-    .type("Symbol")
-    .localized(false)
-    .required(false)
-    .validations([])
-    .disabled(false)
-    .omitted(false);
-  exhibit
-    .createField("authorRu")
-    .name("Author RU")
-    .type("Symbol")
-    .localized(false)
-    .required(false)
-    .validations([])
-    .disabled(false)
-    .omitted(false);
-  exhibit
-    .createField("authorUz")
-    .name("Author UZ")
-    .type("Symbol")
-    .localized(false)
-    .required(false)
-    .validations([])
-    .disabled(false)
-    .omitted(false);
-  exhibit
-    .createField("authorKa")
-    .name("Author KA")
-    .type("Symbol")
-    .localized(false)
-    .required(false)
-    .validations([])
-    .disabled(false)
-    .omitted(false);
+  languages.forEach((lang) => {
+    exhibit
+      .createField(`author${lang.code}`)
+      .name(`Author ${lang.code.toUpperCase()}`)
+      .type("Symbol")
+      .localized(false)
+      .required(false)
+      .validations([])
+      .disabled(false)
+      .omitted(false);
+  });
+
   exhibit
     .createField("yearOfCreation")
     .name("Year of creation")
@@ -108,9 +62,10 @@ module.exports = function (migration) {
     .disabled(false)
     .omitted(false);
 
-  exhibit
-    .createField("descriptionEn")
-    .name("Description EN")
+  languages.forEach((lang) => {
+    exhibit
+    .createField(`description${lang.code}`)
+    .name(`Description ${lang.code.toUpperCase()}`)
     .type("RichText")
     .localized(false)
     .required(false)
@@ -157,216 +112,24 @@ module.exports = function (migration) {
     ])
     .disabled(false)
     .omitted(false);
+  });
 
-  exhibit
-    .createField("descriptionRu")
-    .name("Description RU")
-    .type("RichText")
-    .localized(false)
-    .required(false)
-    .validations([
-      {
-        enabledMarks: [
-          "bold",
-          "italic",
-          "underline",
-          "code",
-          "superscript",
-          "subscript",
-        ],
-        message:
-          "Only bold, italic, underline, code, superscript, and subscript marks are allowed",
-      },
-      {
-        enabledNodeTypes: [
-          "heading-1",
-          "heading-2",
-          "heading-3",
-          "heading-4",
-          "heading-5",
-          "heading-6",
-          "ordered-list",
-          "unordered-list",
-          "hr",
-          "blockquote",
-          "embedded-entry-block",
-          "embedded-asset-block",
-          "table",
-          "hyperlink",
-          "entry-hyperlink",
-          "asset-hyperlink",
-          "embedded-entry-inline",
-        ],
-
-        message:
-          "Only heading 1, heading 2, heading 3, heading 4, heading 5, heading 6, ordered list, unordered list, horizontal rule, quote, block entry, asset, table, link to Url, link to entry, link to asset, and inline entry nodes are allowed",
-      },
-      {
-        nodes: {},
-      },
-    ])
-    .disabled(false)
-    .omitted(false);
-
-  exhibit
-    .createField("descriptionUz")
-    .name("Description UZ")
-    .type("RichText")
-    .localized(false)
-    .required(false)
-    .validations([
-      {
-        enabledMarks: [
-          "bold",
-          "italic",
-          "underline",
-          "code",
-          "superscript",
-          "subscript",
-        ],
-        message:
-          "Only bold, italic, underline, code, superscript, and subscript marks are allowed",
-      },
-      {
-        enabledNodeTypes: [
-          "heading-1",
-          "heading-2",
-          "heading-3",
-          "heading-4",
-          "heading-5",
-          "heading-6",
-          "ordered-list",
-          "unordered-list",
-          "hr",
-          "blockquote",
-          "embedded-entry-block",
-          "embedded-asset-block",
-          "table",
-          "hyperlink",
-          "entry-hyperlink",
-          "asset-hyperlink",
-          "embedded-entry-inline",
-        ],
-
-        message:
-          "Only heading 1, heading 2, heading 3, heading 4, heading 5, heading 6, ordered list, unordered list, horizontal rule, quote, block entry, asset, table, link to Url, link to entry, link to asset, and inline entry nodes are allowed",
-      },
-      {
-        nodes: {},
-      },
-    ])
-    .disabled(false)
-    .omitted(false);
-
-  exhibit
-    .createField("descriptionKa")
-    .name("Description KA")
-    .type("RichText")
-    .localized(false)
-    .required(false)
-    .validations([
-      {
-        enabledMarks: [
-          "bold",
-          "italic",
-          "underline",
-          "code",
-          "superscript",
-          "subscript",
-        ],
-        message:
-          "Only bold, italic, underline, code, superscript, and subscript marks are allowed",
-      },
-      {
-        enabledNodeTypes: [
-          "heading-1",
-          "heading-2",
-          "heading-3",
-          "heading-4",
-          "heading-5",
-          "heading-6",
-          "ordered-list",
-          "unordered-list",
-          "hr",
-          "blockquote",
-          "embedded-entry-block",
-          "embedded-asset-block",
-          "table",
-          "hyperlink",
-          "entry-hyperlink",
-          "asset-hyperlink",
-          "embedded-entry-inline",
-        ],
-
-        message:
-          "Only heading 1, heading 2, heading 3, heading 4, heading 5, heading 6, ordered list, unordered list, horizontal rule, quote, block entry, asset, table, link to Url, link to entry, link to asset, and inline entry nodes are allowed",
-      },
-      {
-        nodes: {},
-      },
-    ])
-    .disabled(false)
-    .omitted(false);
-
-  exhibit
-    .createField("audioFileEn")
-    .name("Audio File EN")
-    .type("Link")
-    .localized(false)
-    .required(false)
-    .validations([
-      {
-        linkMimetypeGroup: ["audio"],
-      },
-    ])
-    .disabled(false)
-    .omitted(false)
-    .linkType("Asset");
-
-  exhibit
-    .createField("audioFileRu")
-    .name("Audio File RU")
-    .type("Link")
-    .localized(false)
-    .required(false)
-    .validations([
-      {
-        linkMimetypeGroup: ["audio"],
-      },
-    ])
-    .disabled(false)
-    .omitted(false)
-    .linkType("Asset");
-
-  exhibit
-    .createField("audioFileUz")
-    .name("Audio File UZ")
-    .type("Link")
-    .localized(false)
-    .required(false)
-    .validations([
-      {
-        linkMimetypeGroup: ["audio"],
-      },
-    ])
-    .disabled(false)
-    .omitted(false)
-    .linkType("Asset");
-
-  exhibit
-    .createField("audioFileKa")
-    .name("Audio File KA")
-    .type("Link")
-    .localized(false)
-    .required(false)
-    .validations([
-      {
-        linkMimetypeGroup: ["audio"],
-      },
-    ])
-    .disabled(false)
-    .omitted(false)
-    .linkType("Asset");
+  languages.forEach((lang) => {
+    exhibit
+      .createField(`audioFile${lang.code}`)
+      .name(`Audio File ${lang.code.toUpperCase()}`)
+      .type("Link")
+      .localized(false)
+      .required(false)
+      .validations([
+        {
+          linkMimetypeGroup: ["audio"],
+        },
+      ])
+      .disabled(false)
+      .omitted(false)
+      .linkType("Asset");
+  });
 
   exhibit
     .createField("slug")
@@ -377,36 +140,34 @@ module.exports = function (migration) {
     .validations([])
     .disabled(false)
     .omitted(false);
-  exhibit.changeFieldControl("nameEn", "builtin", "singleLine", {});
-  exhibit.changeFieldControl("nameRu", "builtin", "singleLine", {});
-  exhibit.changeFieldControl("nameUz", "builtin", "singleLine", {});
-  exhibit.changeFieldControl("nameKa", "builtin", "singleLine", {});
+
+  languages.forEach((lang) => {
+    exhibit.changeFieldControl(`name${lang.code}`, "builtin", "singleLine", {});
+  });
 
   exhibit.changeFieldControl("images", "builtin", "assetLinksEditor", {
     showLinkEntityAction: true,
     showCreateEntityAction: true,
   });
 
-  exhibit.changeFieldControl("authorEn", "builtin", "singleLine", {});
-  exhibit.changeFieldControl("authorRu", "builtin", "singleLine", {});
-  exhibit.changeFieldControl("authorUz", "builtin", "singleLine", {});
-  exhibit.changeFieldControl("authorKa", "builtin", "singleLine", {});
-  exhibit.changeFieldControl("yearOfCreation", "builtin", "singleLine", {});
-  exhibit.changeFieldControl("descriptionEn", "builtin", "richTextEditor", {});
-  exhibit.changeFieldControl("descriptionRu", "builtin", "richTextEditor", {});
-  exhibit.changeFieldControl("descriptionUz", "builtin", "richTextEditor", {});
-  exhibit.changeFieldControl("descriptionKa", "builtin", "richTextEditor", {});
-
-  exhibit.changeFieldControl("audioFileEn", "builtin", "assetLinkEditor", {
-    showLinkEntityAction: true,
-    showCreateEntityAction: true,
+  languages.forEach((lang) => {
+    exhibit.changeFieldControl(`author${lang.code}`, "builtin", "singleLine", {});
   });
 
-  exhibit.changeFieldControl("audioFileRu", "builtin", "assetLinkEditor", {});
-  exhibit.changeFieldControl("audioFileUz", "builtin", "assetLinkEditor", {});
-  exhibit.changeFieldControl("audioFileKa", "builtin", "assetLinkEditor", {});
+  exhibit.changeFieldControl("yearOfCreation", "builtin", "singleLine", {});
+
+  languages.forEach((lang) => {
+    exhibit.changeFieldControl(`description${lang.code}`, "builtin", "richTextEditor", {});
+  });
+
+  languages.forEach((lang) => {
+    exhibit.changeFieldControl(`audioFile${lang.code}`, "builtin", "assetLinkEditor", lang.primary ? {
+      showLinkEntityAction: true,
+      showCreateEntityAction: true,
+    } : {});
+  });
 
   exhibit.changeFieldControl("slug", "builtin", "slugEditor", {
-    trackingFieldId: "nameEn",
+    trackingFieldId: `name${languages.find((lang) => lang.primary).code}`,
   });
 };
