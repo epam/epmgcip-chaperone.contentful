@@ -7,10 +7,12 @@
     "@contentful/f36-components": "4.67.4",
     "@contentful/f36-tokens": "4.0.5",
     "@contentful/react-apps-toolkit": "1.2.16",
+    "contentful": "^10.14.1",
     "contentful-management": "10.46.4",
     "emotion": "10.0.27",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-image-crop": "^11.0.6",
     "react-scripts": "5.0.1"
   },
   "scripts": {
