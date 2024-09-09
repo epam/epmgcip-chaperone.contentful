@@ -1,47 +1,21 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSDK } from "@contentful/react-apps-toolkit";
 import { FieldAppSDK } from "@contentful/app-sdk";
-import { createClient } from "contentful";
+import { Button } from "@contentful/f36-components";
 import styles from "./Field.module.css";
 import "react-image-crop/dist/ReactCrop.css";
 import ReactCrop, { Crop } from "react-image-crop";
-
-const client = createClient({
-  space: "su8nprc5ebu0",
-  accessToken: "MFL9YYGkOUf3BjdCb_PQ8Hv1_lwHLBrVhWP5APW2_80",
-});
+import clsx from "clsx";
+import useImageAssets from "../hooks/useImageAssets";
 
 const Field = () => {
   const sdk = useSDK<FieldAppSDK>();
   const [crop, setCrop] = useState<Crop>();
-  const [srcs, setSrcs] = useState<string[]>([]);
+  const [srcs, updateAssets] = useImageAssets();
   const [activeImage, setActiveImage] = useState<string | undefined>();
-  const [link, setLink] = useState("");
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const value = sdk.entry.fields.images.getValue() ?? [];
-
-      const ids = new Set(
-        value?.map((item: { sys: { id: string } }) => item.sys.id) ?? []
-      );
-
-      client.getAssets().then((response) => {
-        const assets = response.items.filter((item) => ids.has(item.sys.id));
-        const urls = assets.map((asset) => `https:${asset.fields.file?.url}`);
-
-        setSrcs(urls);
-      });
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [sdk]);
-
-  useEffect(() => {
-    sdk.window.updateHeight();
-  }, [sdk]);
+  const entry = sdk.entry;
 
   const handleImageClick = (src: string) => {
     setActiveImage(src);
@@ -50,35 +24,49 @@ const Field = () => {
 
   const handleCopyLinkClick = () => {
     window.navigator.clipboard.writeText(link);
+    setIsCopied(true);
+
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
+  };
+
+  const getLink = () => {
+    if (activeImage) {
+      if (crop) {
+        return `${activeImage}?x=${crop.x}&y=${crop.y}&w=${crop.width}&h=${crop.height}`;
+      } else {
+        return activeImage;
+      }
+    }
+
+    return "";
+  };
+
+  const link = getLink();
+
+  const onReloadImages = () => {
+    updateAssets();
   };
 
   useEffect(() => {
-    if (activeImage) {
-      if (crop) {
-        setLink(
-          `${activeImage}?x=${crop.x}&y=${crop.y}&w=${crop.width}&h=${crop.height}`
-        );
-      } else {
-        setLink(activeImage);
-      }
-    }
-  }, [crop, activeImage]);
+    sdk.window.startAutoResizer();
+  }, [sdk, entry]);
 
   return (
     <div className={styles.container}>
-      <div className={styles.linkContainer}>
-        <div className={styles.link}>{link}</div>
-        <div className={styles.copyButton} onClick={handleCopyLinkClick}>
-          Copy
-        </div>
-      </div>
+      <Button variant="primary" size="medium" onClick={onReloadImages}>
+        Reload Images
+      </Button>
+
       <div className={styles.listContainer}>
         {srcs.map((src) => (
           <div
             onClick={() => handleImageClick(src)}
             className={styles.imageContainer}
+            key={src}
           >
-            <img className={styles.image} key={src} src={src} alt="" />
+            <img className={styles.image} src={src} alt="" />
           </div>
         ))}
       </div>
@@ -88,6 +76,20 @@ const Field = () => {
             <img src={activeImage} alt="" />
           </ReactCrop>
         )}
+      </div>
+      <div className={styles.linkContainer}>
+        <div className={styles.link}>{link}</div>
+        <button
+          type="button"
+          className={clsx(
+            styles.copyButton,
+            isCopied && styles.copyButtonSuccess
+          )}
+          onClick={handleCopyLinkClick}
+          disabled={link.length > 0 ? false : true}
+        >
+          {isCopied ? "Copied!" : "Copy"}
+        </button>
       </div>
     </div>
   );
