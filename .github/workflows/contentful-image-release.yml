@@ -3,6 +3,9 @@
     types: [released]
     paths:
       - img-region-select-app/**
+      - .github/contentful-image-merge.yml
+      - .github/contentful-image-release.yml
+      - .github/image-pull-request.yml
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
