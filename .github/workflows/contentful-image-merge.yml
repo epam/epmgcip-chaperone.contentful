@@ -30,7 +30,7 @@ jobs:
         env:
           CONTENTFUL_ACCESS_TOKEN: ${{ secrets.STAGING_CONTENTFUL_ACCESS_TOKEN }}
           CONTENTFUL_ORG_ID: ${{ secrets.STAGING_CONTENTFUL_ORG_ID }}
-          CONTENTFUL_APP_DEF_ID: ${{ secrets.STAGING_CONTENTFUL_APP_DEF_ID }}
+          CONTENTFUL_APP_DEF_ID: ${{ secrets.STAGING_CONTENTFUL_IMAGE_APP_DEF_ID }}
         run: |
           cd img-region-select-app
           npm run upload-ci
