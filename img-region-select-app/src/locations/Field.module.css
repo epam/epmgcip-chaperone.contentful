@@ -1,0 +1,94 @@
+html {
+  overflow: hidden;
+}
+
+.container {
+  padding-right: 1px;
+}
+
+.listContainer {
+  display: flex;
+  gap: 4px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding-top: 8px;
+}
+
+.imageContainer {
+  padding: 8px;
+  border: 1px solid rgba(126, 126, 126, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border 200ms;
+}
+
+.imageContainer:hover {
+  border-color: rgba(126, 126, 126, 0.8);
+}
+
+.image {
+  min-width: 150px;
+  width: 15px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(126, 126, 126, 0.4)
+}
+
+.linkContainer {
+  word-break: break-all;
+  border: 1px solid rgba(126, 126, 126, 0.2);
+  border-radius: 8px;
+  display: flex;
+  color: rgba(0, 0, 0, .8);
+  margin-top: 8px;
+}
+
+.link {
+  padding: 6px;
+  flex-grow: 1;
+}
+
+.copyButton {
+  word-break: keep-all;
+  color: black;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0;
+  flex-shrink: 0;
+  border: none;
+  border-left: 1px solid rgba(126, 126, 126, 0.2);
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.copyButton:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.copyButton:active {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.copyButton[disabled] {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.copyButtonSuccess {
+  color: rgb(0, 133, 57);
+}
+
+.cropContainer {
+  margin-top: 8px;
+}
