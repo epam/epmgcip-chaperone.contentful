@@ -2,6 +2,9 @@
   pull_request:
     paths:
       - qr-code-app/**
+      - .github/workflows/contentful-qr-code-merge.yml
+      - .github/workflows/contentful-qr-code-release.yml
+      - .github/workflows/qr-code-pull-request.yml
 jobs:
   build_and_preview:
     runs-on: ubuntu-latest
