@@ -4,9 +4,9 @@
       - main
     paths:
       - qr-code-app/**
-      - .github/contentful-qr-code-merge.yml
-      - .github/contentful-qr-code-release.yml
-      - .github/qr-code-pull-request.yml
+      - .github/workflows/contentful-qr-code-merge.yml
+      - .github/workflows/contentful-qr-code-release.yml
+      - .github/workflows/qr-code-pull-request.yml
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest

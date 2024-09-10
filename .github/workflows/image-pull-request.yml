@@ -2,9 +2,9 @@
   pull_request:
     paths:
       - img-region-select-app/**
-      - .github/contentful-image-merge.yml
-      - .github/contentful-image-release.yml
-      - .github/image-pull-request.yml
+      - .github/workflows/contentful-image-merge.yml
+      - .github/workflows/contentful-image-release.yml
+      - .github/workflows/image-pull-request.yml
 jobs:
   build_and_preview:
     runs-on: ubuntu-latest
