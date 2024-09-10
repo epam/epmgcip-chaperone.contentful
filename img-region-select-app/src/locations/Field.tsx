@@ -8,17 +8,25 @@ import ReactCrop, { Crop } from "react-image-crop";
 import clsx from "clsx";
 import useImageAssets from "../hooks/useImageAssets";
 
+const calculateZoom = (crop: Crop) => {
+  const highestPercent = Math.max(crop.height, crop.width);
+  return Math.round(100 / highestPercent);
+};
+
 const Field = () => {
   const sdk = useSDK<FieldAppSDK>();
   const [crop, setCrop] = useState<Crop>();
   const [srcs, updateAssets] = useImageAssets();
-  const [activeImage, setActiveImage] = useState<string | undefined>();
+  const [activeImageIndex, setActiveImageIndex] = useState<
+    number | undefined
+  >();
   const [isCopied, setIsCopied] = useState<boolean>(false);
-
   const entry = sdk.entry;
 
-  const handleImageClick = (src: string) => {
-    setActiveImage(src);
+  const zoom = crop ? calculateZoom(crop) : 1;
+
+  const handleImageClick = (index: number) => {
+    setActiveImageIndex(index);
     setCrop(undefined);
   };
 
@@ -32,12 +40,10 @@ const Field = () => {
   };
 
   const getLink = () => {
-    if (activeImage) {
-      if (crop) {
-        return `${activeImage}?x=${crop.x}&y=${crop.y}&w=${crop.width}&h=${crop.height}`;
-      } else {
-        return activeImage;
-      }
+    if (activeImageIndex !== undefined && crop) {
+      const centerZoomX = crop.x + crop.width / 2;
+      const centerZoomY = crop.y + crop.height / 2;
+      return `/?imageId=${srcs[activeImageIndex].id}&x=${centerZoomX}&y=${centerZoomY}&zoom=${zoom}`;
     }
 
     return "";
@@ -47,6 +53,10 @@ const Field = () => {
 
   const onReloadImages = () => {
     updateAssets();
+  };
+
+  const onCropChange = (crop: Crop, percentCrop: Crop) => {
+    setCrop(percentCrop);
   };
 
   useEffect(() => {
@@ -60,20 +70,20 @@ const Field = () => {
       </Button>
 
       <div className={styles.listContainer}>
-        {srcs.map((src) => (
+        {srcs.map((src, index) => (
           <div
-            onClick={() => handleImageClick(src)}
+            onClick={() => handleImageClick(index)}
             className={styles.imageContainer}
-            key={src}
+            key={src.id}
           >
-            <img className={styles.image} src={src} alt="" />
+            <img className={styles.image} src={src.url} alt="" />
           </div>
         ))}
       </div>
       <div className={styles.cropContainer}>
-        {activeImage && (
-          <ReactCrop crop={crop} onChange={setCrop}>
-            <img src={activeImage} alt="" />
+        {activeImageIndex !== undefined && (
+          <ReactCrop crop={crop} onChange={onCropChange}>
+            <img src={srcs[activeImageIndex].url} alt="" />
           </ReactCrop>
         )}
       </div>

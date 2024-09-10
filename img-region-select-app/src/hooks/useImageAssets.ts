@@ -9,7 +9,7 @@ const useImageAssets = () => {
   const sdk = useSDK<FieldAppSDK>();
   const entry = sdk.entry;
   const contentField = entry.fields[CONTENT_FIELD_ID];
-  const [srcs, setSrcs] = useState<string[]>([]);
+  const [srcs, setSrcs] = useState<{ url: string; id: string }[]>([]);
 
   const getAssets = useCallback(async () => {
     const value = sdk.entry.fields.images.getValue() ?? [];
@@ -19,12 +19,14 @@ const useImageAssets = () => {
     );
 
     const assets = await client.getAssets();
-    const currentAssets = assets.items.filter((item) => ids.has(item.sys.id));
-    const urls = currentAssets.map(
-      (asset) => `https:${asset.fields.file?.url}`
-    );
+    const currentAssets = assets.items
+      .filter((item) => ids.has(item.sys.id))
+      .map((asset) => ({
+        id: asset.sys.id,
+        url: `https:${asset.fields.file?.url}`,
+      }));
 
-    return urls;
+    return currentAssets;
   }, [sdk]);
 
   const updateAssets = useCallback(async () => {
@@ -35,7 +37,6 @@ const useImageAssets = () => {
 
   useEffect(() => {
     const detach = contentField.onValueChanged(async () => {
-      console.log("ddddddd");
       updateAssets();
     });
     return () => detach();
