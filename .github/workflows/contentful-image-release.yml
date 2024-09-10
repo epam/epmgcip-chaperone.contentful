@@ -1,0 +1,35 @@
+'on':
+  release:
+    types: [released]
+    paths:
+      - img-region-select-app/**
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: |
+          cd img-region-select-app
+          npm ci
+      - name: Set Secrets and Change Dir
+        run: |
+          cd img-region-select-app
+          echo "REACT_APP_CONTENTFUL_SPACE=${{ secrets.CONTENTFUL_SPACE }}" >> .env
+          echo "REACT_APP_CONTENTFUL_ACCESS_TOKEN=${{ secrets.CONTENTFUL_ACCESS_TOKEN }}" >> .env
+      - name: Build
+        run: |
+          cd img-region-select-app
+          npm run build
+      - name: Deploy
+        env:
+          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
+          CONTENTFUL_ORG_ID: ${{ secrets.CONTENTFUL_ORG_ID }}
+          CONTENTFUL_APP_DEF_ID: ${{ secrets.CONTENTFUL_APP_DEF_ID }}
+        run: |
+          cd img-region-select-app
+          npm run upload-ci

@@ -1,0 +1,35 @@
+'on':
+  push:
+    branches:
+      - main
+    paths:
+      - qr-code-app/**
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: |
+          cd qr-code-app
+          npm ci
+      - name: Set Secrets and Change Dir
+        run: |
+          cd qr-code-app
+          echo "REACT_APP_DOMAIN=${{ secrets.STAGING_REACT_APP_DOMAIN }}" >> .env
+      - name: Build
+        run: |
+          cd qr-code-app
+          npm run build
+      - name: Deploy
+        env:
+          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.STAGING_CONTENTFUL_ACCESS_TOKEN }}
+          CONTENTFUL_ORG_ID: ${{ secrets.STAGING_CONTENTFUL_ORG_ID }}
+          CONTENTFUL_APP_DEF_ID: ${{ secrets.STAGING_CONTENTFUL_APP_DEF_ID }}
+        run: |
+          cd qr-code-app
+          npm run upload-ci
