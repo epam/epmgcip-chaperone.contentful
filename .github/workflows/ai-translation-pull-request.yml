@@ -1,0 +1,24 @@
+'on': 
+  pull_request:
+    paths:
+      - ai-communication-app/**
+      - .github/workflows/contentful-ai-translation-merge.yml
+      - .github/workflows/contentful-ai-translation-release.yml
+      - .github/workflows/ai-translation-pull-request.yml
+jobs:
+  build_and_preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: |
+          cd ai-communication-app
+          npm ci
+      - name: Build
+        run: |
+          cd ai-communication-app
+          npm run build
