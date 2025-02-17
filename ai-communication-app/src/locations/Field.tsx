@@ -66,17 +66,18 @@ const Field: React.FC = () => {
       const languageToArray = languageTo.split(",").map((lang) => lang.trim());
       const responses = await Promise.all(
         languageToArray.map((lang) =>
-          fetch(process.env.REACT_APP_AI_TRANSLATE_FUNCTION_URL || "", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              text: emulatedWorkingWithInput,
-              language: lang,
-              code: process.env.REACT_APP_AI_TRANSLATE_FUNCTION_CODE,
-            }),
-          })
+          fetch(
+            `${process.env.REACT_APP_AI_TRANSLATE_FUNCTION_URL}?language=${lang}&code=${process.env.REACT_APP_AI_TRANSLATE_FUNCTION_CODE}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                text: emulatedWorkingWithInput,
+              }),
+            }
+          )
             .then((response) => response.json())
             .then((response) => ({ lang, text: response["LLM Response"] }))
         )
