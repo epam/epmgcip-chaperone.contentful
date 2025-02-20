@@ -2,7 +2,7 @@ enum LanguagesEnum {
     English = 'En',
     Russian = 'Ru',
     Uzbek = 'Uz',
-    Karakalpak = 'Kaa'
+    Karakalpak = 'Ka'
 }
 
 export default LanguagesEnum;
