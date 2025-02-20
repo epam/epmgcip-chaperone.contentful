@@ -1,0 +1,39 @@
+'on':
+  push:
+    branches:
+      - main
+    paths:
+      - ai-communication-app/**
+      - .github/workflows/contentful-ai-translation-merge.yml
+      - .github/workflows/contentful-ai-translation-release.yml
+      - .github/workflows/ai-translation-pull-request.yml
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: |
+          cd ai-communication-app
+          npm ci
+      - name: Set Secrets and Change Dir
+        run: |
+          cd ai-communication-app
+          echo "REACT_APP_AI_TRANSLATE_FUNCTION_URL=${{ secrets.STAGING_REACT_APP_AI_TRANSLATE_FUNCTION_URL }}" >> .env
+          echo "REACT_APP_AI_TRANSLATE_FUNCTION_CODE=${{ secrets.STAGING_REACT_APP_AI_TRANSLATE_FUNCTION_CODE }}" >> .env
+      - name: Build
+        run: |
+          cd ai-communication-app
+          npm run build
+      - name: Deploy
+        env:
+          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.STAGING_CONTENTFUL_ACCESS_TOKEN }}
+          CONTENTFUL_ORG_ID: ${{ secrets.STAGING_CONTENTFUL_ORG_ID }}
+          CONTENTFUL_APP_DEF_ID: ${{ secrets.STAGING_CONTENTFUL_AI_TRANSLATION_APP_DEF_ID }}
+        run: |
+          cd ai-communication-app
+          npm run upload-ci
