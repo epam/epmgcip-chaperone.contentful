@@ -79,7 +79,12 @@ const Field: React.FC = () => {
             }
           )
             .then((response) => response.json())
-            .then((response) => ({ lang, text: response["LLM Response"] }))
+            .then((response) => ({
+              lang,
+              text: response["LLM Response"]
+                .replace("```html\n", "")
+                .replace("\n```", ""),
+            }))
         )
       );
 
