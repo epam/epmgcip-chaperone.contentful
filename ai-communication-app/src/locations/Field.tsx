@@ -45,8 +45,15 @@ const Field: React.FC = () => {
   const languagesExceptFrom = languages.filter((lang) => lang !== languageFrom);
   const languagesTo = [languagesExceptFrom.join(", "), ...languagesExceptFrom];
   const [languageTo, setLanguageTo] = useState(languagesTo[0]);
-  const handleOnChangeLanguageFrom = (event: ChangeEvent<HTMLSelectElement>) =>
+  const handleOnChangeLanguageFrom = (
+    event: ChangeEvent<HTMLSelectElement>
+  ) => {
+    const updatedLanguages = languages
+      .filter((lang) => lang !== event.target.value)
+      .join(", ");
     setLanguageFrom(event.target.value);
+    setLanguageTo(updatedLanguages);
+  };
   const handleOnChangeLanguageTo = (event: ChangeEvent<HTMLSelectElement>) =>
     setLanguageTo(event.target.value);
 
@@ -55,14 +62,13 @@ const Field: React.FC = () => {
 
   const turndownService = new TurndownService();
 
-  const emulatedWorkingWithInput = documentToHtmlString(
-    toBeTranslatedField.getValue()
-  );
-
   const callApi = async () => {
     setIsTranslating(true);
 
     try {
+      const emulatedWorkingWithInput = documentToHtmlString(
+        toBeTranslatedField.getValue()
+      );
       const languageToArray = languageTo.split(",").map((lang) => lang.trim());
       const responses = await Promise.all(
         languageToArray.map((lang) =>
